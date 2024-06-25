@@ -1,0 +1,165 @@
+<div class="body-container">
+    <div class="row">
+        <div class="col-1">
+            <div class="oneWay-container">
+                <h4>One Way</h4>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-3">
+                <div class="container-form p-3">
+                    <div class="col-12">
+                        <select class="form-select" name="fromAirport" [(ngModel)]="fromAirport">
+                            <option [value]="">Select Depature Airport</option>
+                            <option *ngFor="let airport of airport" [value]="airport.airportId">
+                                {{airport.airportName}},{{airport.cityName}}</option>
+                        </select>
+                    </div>
+                    <div class="col-12 pt-3">
+                        <select class="form-select" name="toAirport" [(ngModel)]="toAirport">
+                            <option [value]="">Select Arrival Airport</option>
+                            <option *ngFor="let airport of airport" [value]="airport.airportId">
+                                {{airport.airportName}},{{airport.cityName}}</option>
+                        </select>
+                    </div>
+                    <div class="col-12 pt-3">
+                        <input type="date" class="form-control rounded-0" name="travelDate" [(ngModel)]="travelDate"
+                            placeholder="dd-mm-yyyy">
+                    </div>
+                    <div class="col-12 pt-3">
+                        <input type="text" class="form-control rounded-0" placeholder="Number of Travelers">
+                    </div>
+                    <div class="col-12 pt-3">
+                        <button type="submit" class="form-control rounded-0 formButton"
+                            (click)="searchFlight()">Search</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-8 ms-5">
+                <div class="row container1">
+                    <div class="col-4 flight-details">
+                        <h4>Chennai<span class="ms-2">(MAA)</span></h4>
+                        <span>2024-03-06</span>
+                    </div>
+                    <div class="col-4 d-flex justify-content-center align-items-center">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                    <div class="col-4 flight-details">
+                        <div class="d-flex flex-column align-items-end">
+                            <h4>Coimbatore<span class="ms-2">(CJB)</span></h4>
+                            <span>2024-03-06</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row container2 mt-2">
+                    <div class="col-3 p-2">
+                        <h4>Flight Name</h4>
+                    </div>
+                    <div class="col-2 p-2">
+                        <h4>Departure</h4>
+                    </div>
+                    <div class="col-2 p-2">
+                        <h4>Arrival</h4>
+                    </div>
+                    <div class="col-2 p-2">
+                        <h4>Fare</h4>
+                    </div>
+                    <div class="col-3 p-2">
+
+                    </div>
+                </div>
+
+                <div class="flight-container mt-2" *ngFor="let flight of flightList">
+                    <div class="flight-child pe-3">
+                        <div class="flight-container2">
+                            <div>
+                                <img style="height:75px; width:50px;" *ngIf="flight?.vendorLogoUrl"
+                                    [src]="flight?.vendorLogoUrl" alt="">
+                            </div>
+                            <div class="">
+                                <span>{{flight.vendorName}}</span>
+                                <p>{{flight.flightNumber}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flight-child">
+                        <p>{{flight.departureTime}}</p>
+                    </div>
+                    <div class="flight-child">
+                        <p>{{flight.arrivalTime}}</p>
+                    </div>
+                    <div class="flight-child">
+                        <p>{{flight.price}}</p>
+                    </div>
+                    <div class="flight-child">
+                        <button type="submit" (click)="bookTicket(flight.flightId)" class="flight-button">Book Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal" id="bookModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Modal Heading</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeModel()"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-3">
+                        <label for="">Name</label>
+                        <input type="text" [(ngModel)]="passengerObj.travelName" class="form-control">
+                    </div>
+                    <div class="col-3">
+                        <label for="">Contact No</label>
+                        <input type="text" [(ngModel)]="passengerObj.contactNo" class="form-control">
+                    </div>
+                    <div class="col-3">
+                        <label for="">Aadhar Card</label>
+                        <input type="text" [(ngModel)]="passengerObj.aadharNo" class="form-control">
+                    </div>
+                    <div class="col-3">
+                        <button type="button" class="btn btn-primary" (click)="addPassenger()">Add</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Sr:No</th>
+                                    <th>Name</th>
+                                    <th>Contact Number</th>
+                                    <th>Aadhar Number</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let passenger of passengerList;let sr=index">
+                                    <td>{{sr+1}}</td>
+                                    <td>{{passenger.travelName}}</td>
+                                    <td>{{passenger.contactNo}}</td>
+                                    <td>{{passenger.aadharNo}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                    (click)="closeModel()">Close</button>
+                    <button type="button" class="btn btn-success" 
+                    (click)="onBookTicket()">Book Ticket</button>
+            </div>
+
+        </div>
+    </div>
+</div>
